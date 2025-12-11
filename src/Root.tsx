@@ -1,47 +1,58 @@
 import "./index.css";
 import { Composition } from "remotion";
-import { HelloWorld, myCompSchema } from "./HelloWorld";
-import { Logo, myCompSchema2 } from "./HelloWorld/Logo";
-
-// Each <Composition> is an entry in the sidebar!
+import HelloWorld from "./HelloWorld";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        // You can take the "id" to render a video:
-        // npx remotion render HelloWorld
         id="HelloWorld"
         component={HelloWorld}
-        durationInFrames={150}
-        fps={30}
+        durationInFrames={60 * 43}
+        fps={60}
         width={1920}
         height={1080}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
-        schema={myCompSchema}
         defaultProps={{
-          titleText: "Welcome to Remotion",
-          titleColor: "#000000",
-          logoColor1: "#91EAE4",
-          logoColor2: "#86A8E7",
-        }}
-      />
-
-      {/* Mount any React component to make it show up in the sidebar and work on it individually! */}
-      <Composition
-        id="OnlyLogo"
-        component={Logo}
-        durationInFrames={150}
-        fps={30}
-        width={1920}
-        height={1080}
-        schema={myCompSchema2}
-        defaultProps={{
-          logoColor1: "#91dAE2" as const,
-          logoColor2: "#86A8E7" as const,
+          storeName: "Creem",
+          joinedDate: "2025-12-01",
+          totalRevenue: 1274,
+          totalCustomers: 5,
+          countries: [
+            "GB",
+            "CA",
+            "AU",
+            "DE",
+            "FR",
+            "ES",
+            "IT",
+            "NL",
+            "BE",
+            "SE",
+          ],
+          bestCustomer: 124,
+          saleEveryMinutes: 5400,
         }}
       />
     </>
   );
 };
+
+// Region = us-east-1
+// Memory = 2048MB
+// Disk size = 2048MB
+// Timeout = 120sec
+// Version = 4.0.384
+// CloudWatch Logging Enabled = true
+// CloudWatch Retention Period = 14 days
+// Lambda Insights Enabled = false
+// Deployed as remotion-render-4-0-384-mem2048mb-disk2048mb-120sec
+
+// andreelias@Andres-MacBook-Pro-2 creem-year-review % npx remotion lambda sites create src/index.ts --site-name=creem-recap
+// Bundled site         ━━━━━━━━━━━━━━━━━━ 2197ms
+// Created bucket       ━━━━━━━━━━━━━━━━━━ 1641ms
+// Uploaded to S3       ━━━━━━━━━━━━━━━━━━ 3508ms (+28 files)
+// Serve URL            https://remotionlambda-useast1-5iy6mnvtvj.s3.us-east-1.amazonaws.com/sites/creem-recap/index.html
+// Site name            creem-recap
+
+// ℹ️   Redeploy your site everytime you make changes to it. You can overwrite the existing site by running:
+// npx remotion lambda sites create src/index.ts --site-name=creem-recap
