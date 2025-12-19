@@ -1,4 +1,10 @@
-import { Easing, interpolate, useCurrentFrame } from "remotion";
+import {
+  Easing,
+  interpolate,
+  useCurrentFrame,
+  staticFile,
+  Img,
+} from "remotion";
 import { Lottie } from "@remotion/lottie";
 import { useLottie } from "../hooks/useLottie";
 
@@ -90,32 +96,50 @@ export default function BigCustomer({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center text-center w-full">
-      <div
-        className="text-[100px] mx-auto w-full"
+    <div className="flex flex-col items-center justify-center text-center w-full h-full relative">
+      <Img
+        src={staticFile("Inbazz-Background.jpg")}
         style={{
-          opacity: textOpacity,
-          transform: `translateY(${textTranslateY}px)`,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
         }}
-      >
-        Your best customer spent{" "}
-        {coinAnimationData && (
-          <Lottie
-            animationData={coinAnimationData}
-            className="inline-block align-middle"
-            style={{ width: 100, height: 100 }}
-            loop
-          />
-        )}
-      </div>
+      />
+      <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }} />
       <div
-        className="text-[200px] w-full font-bold"
-        style={{
-          opacity: revenueOpacity,
-          transform: `translateY(${revenueTranslateY}px)`,
-        }}
+        className="flex flex-col items-center justify-center text-center w-full relative"
+        style={{ zIndex: 2 }}
       >
-        {formatRevenue(animatedRevenue)}
+        <div
+          className="text-[100px] mx-auto w-full"
+          style={{
+            opacity: textOpacity,
+            transform: `translateY(${textTranslateY}px)`,
+          }}
+        >
+          Your best customer spent{" "}
+          {coinAnimationData && (
+            <Lottie
+              animationData={coinAnimationData}
+              className="inline-block align-middle"
+              style={{ width: 100, height: 100 }}
+              loop
+            />
+          )}
+        </div>
+        <div
+          className="text-[200px] w-full font-bold"
+          style={{
+            opacity: revenueOpacity,
+            transform: `translateY(${revenueTranslateY}px)`,
+          }}
+        >
+          {formatRevenue(animatedRevenue)}
+        </div>
       </div>
     </div>
   );

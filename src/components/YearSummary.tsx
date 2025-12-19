@@ -103,40 +103,40 @@ export default function YearSummary() {
   // Load all Lottie animations
   const moneyFaceAnimationData = useLottie("/lottie/money-face.json");
   const sunglassesAnimationData = useLottie("/lottie/sunglasses.json");
-  const globeAnimationData = useLottie("/lottie/globe.json");
   const coinAnimationData = useLottie("/lottie/coin.json");
   const fireAnimationData = useLottie("/lottie/fire.json");
   const yellowHeartAnimationData = useLottie("/lottie/yellow-heart.json");
+  const shoppingCartAnimationData = useLottie("/lottie/shopping_bag.json");
 
   const stats = [
     {
-      label: "Total Revenue",
+      label: "Receita Total",
       value: "$1.4M",
       animationData: moneyFaceAnimationData,
     },
     {
-      label: "Customers",
+      label: "Visualizações",
       value: "5",
       animationData: sunglassesAnimationData,
     },
     {
-      label: "Countries",
+      label: "Produtos Vendidos",
       value: "47",
-      animationData: globeAnimationData,
+      animationData: shoppingCartAnimationData,
     },
     {
-      label: "Best Customer",
+      label: "Melhor Creator",
       value: "$1.2K",
       animationData: coinAnimationData,
     },
     {
-      label: "Sale Every",
-      value: "2.5 hours",
+      label: "Venda a Cada",
+      value: "2.5 horas",
       animationData: fireAnimationData,
     },
     {
-      label: "Joined",
-      value: "Jan 4, 2025",
+      label: "Entrou em",
+      value: "4 Jan 2025",
       animationData: yellowHeartAnimationData,
     },
   ];
@@ -191,47 +191,65 @@ export default function YearSummary() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full p-16">
-      {/* Title */}
-      <div
-        className="text-8xl font-bold mb-16 text-center flex items-center justify-center gap-4"
+    <div className="flex flex-col items-center justify-center w-full h-full relative">
+      <Img
+        src={staticFile("Inbazz-Background.jpg")}
         style={{
-          opacity: titleOpacity,
-          transform: `translateY(${titleTranslateY}px)`,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
         }}
+      />
+      <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }} />
+      <div
+        className="flex flex-col items-center justify-center w-full h-full p-16 relative"
+        style={{ zIndex: 2 }}
       >
-        <span>Your 2025 Year at Creem</span>
-        <Img
-          src={staticFile("creem.png")}
-          alt="Creem"
-          width={100}
-          height={100}
-          className="translate-y-[5px]"
-          style={{ display: "inline-block", verticalAlign: "middle" }}
-        />
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-3 gap-8 w-full max-w-[1600px] mb-16">
-        {stats.map((stat, index) => (
-          <StatCard
-            key={index}
-            label={stat.label}
-            value={stat.value}
-            animationData={stat.animationData}
-            delay={cardsDelay}
-            index={index}
+        {/* Title */}
+        <div
+          className="text-8xl font-bold mb-16 text-center flex items-center justify-center gap-4"
+          style={{
+            opacity: titleOpacity,
+            transform: `translateY(${titleTranslateY}px)`,
+          }}
+        >
+          <span>Seu 2025 com a Inbazz</span>
+          <Img
+            src={staticFile("creem.png")}
+            alt="Creem"
+            width={100}
+            height={100}
+            className="translate-y-[5px]"
+            style={{ display: "inline-block", verticalAlign: "middle" }}
           />
-        ))}
-      </div>
-      <div
-        style={{
-          opacity: storeNameOpacity,
-          transform: `translateY(${storeNameTranslateY}px)`,
-        }}
-        className="text-4xl"
-      >
-        Awesome Store
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-3 gap-8 w-full max-w-[1600px] mb-16">
+          {stats.map((stat, index) => (
+            <StatCard
+              key={index}
+              label={stat.label}
+              value={stat.value}
+              animationData={stat.animationData}
+              delay={cardsDelay}
+              index={index}
+            />
+          ))}
+        </div>
+        <div
+          style={{
+            opacity: storeNameOpacity,
+            transform: `translateY(${storeNameTranslateY}px)`,
+          }}
+          className="text-4xl"
+        >
+          Awesome Store
+        </div>
       </div>
     </div>
   );

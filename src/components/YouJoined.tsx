@@ -1,4 +1,10 @@
-import { useCurrentFrame, interpolate, Easing } from "remotion";
+import {
+  useCurrentFrame,
+  interpolate,
+  Easing,
+  staticFile,
+  Img,
+} from "remotion";
 
 export default function YouJoined({
   joinedDate = "2025-01-01",
@@ -17,31 +23,27 @@ export default function YouJoined({
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
     ];
     const day = date.getDate();
     const month = months[date.getMonth()];
     const year = date.getFullYear();
 
-    // Add ordinal suffix (1st, 2nd, 3rd, 4th, etc.)
-    const getOrdinalSuffix = (n: number) => {
-      const s = ["th", "st", "nd", "rd"];
-      const v = n % 100;
-      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    return {
+      firstLine: `${day} de ${month}`,
+      secondLine: `de ${year}`,
     };
-
-    return `${month} ${getOrdinalSuffix(day)} ${year}`;
   };
 
   const dateText = formatDate(joinedDate);
@@ -93,24 +95,41 @@ export default function YouJoined({
   );
 
   return (
-    <div className="flex flex-col items-center justify-center text-center w-full">
+    <div className="flex flex-col items-center justify-center text-center w-full h-full relative">
+      <Img
+        src={staticFile("Inbazz-Background.jpg")}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
+      />
+      {/* Optional: Add overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }} />
       <div
-        className="text-[100px] mx-auto w-full"
+        className="text-[100px] mx-auto w-full relative"
         style={{
           opacity: youJoinedOpacity,
           transform: `translateY(${youJoinedTranslateY}px)`,
+          zIndex: 2,
         }}
       >
-        You joined us
+        Nossa parceria começou em
       </div>
       <div
-        className="text-[180px] w-full font-bold"
+        className="text-[180px] w-full font-bold relative flex flex-col items-center"
         style={{
           opacity: dateOpacity,
           transform: `translateY(${dateTranslateY}px)`,
+          zIndex: 2,
         }}
       >
-        {dateText}
+        <div>{dateText.firstLine}</div>
+        <div>{dateText.secondLine}</div>
       </div>
     </div>
   );

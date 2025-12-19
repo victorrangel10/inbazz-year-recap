@@ -4,15 +4,26 @@ import { useCurrentFrame, interpolate, AbsoluteFill } from "remotion";
 export default function FadeWrapper({
   children,
   duration,
-  fadeOutFrames = 7,
+  fadeInFrames = 15,
+  fadeOutFrames = 15,
 }: {
   children: React.ReactNode;
   duration: number;
+  fadeInFrames?: number;
   fadeOutFrames?: number;
 }) {
   const frame = useCurrentFrame();
 
-  const opacity = useMemo(
+  const fadeInOpacity = useMemo(
+    () =>
+      interpolate(frame, [0, fadeInFrames], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      }),
+    [frame, fadeInFrames],
+  );
+
+  const fadeOutOpacity = useMemo(
     () =>
       interpolate(frame, [duration - fadeOutFrames, duration], [1, 0], {
         extrapolateLeft: "clamp",
@@ -20,6 +31,8 @@ export default function FadeWrapper({
       }),
     [frame, duration, fadeOutFrames],
   );
+
+  const opacity = Math.min(fadeInOpacity, fadeOutOpacity);
 
   return (
     <AbsoluteFill

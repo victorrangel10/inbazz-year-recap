@@ -2,36 +2,72 @@ import "./index.css";
 import { Composition } from "remotion";
 import HelloWorld from "./HelloWorld";
 
+const storeData = {
+  storeName: "Zerezes",
+  joinedDate: "2025-06-20",
+  totalSales: 7059,
+  totalRevenue: 4136554.73,
+  totalViews: 20571729,
+  totalPosts: 4593,
+  topByRevenue: {
+    name: "lauany schultz",
+    username: "lauanyschultz",
+    profilePhoto:
+      "https://pyleyiwcydiznmrilviu.supabase.co/storage/v1/object/public/bucket/userprofilepicture/lauanyschultz",
+    value: 296507.8,
+  },
+  topBySales: {
+    name: "lauany schultz",
+    username: "lauanyschultz",
+    profilePhoto:
+      "https://pyleyiwcydiznmrilviu.supabase.co/storage/v1/object/public/bucket/userprofilepicture/lauanyschultz",
+    value: 517,
+  },
+  topByViews: {
+    name: "lauany schultz",
+    username: "lauanyschultz",
+    profilePhoto:
+      "https://pyleyiwcydiznmrilviu.supabase.co/storage/v1/object/public/bucket/userprofilepicture/lauanyschultz",
+    value: 832198,
+  },
+  topProducts: [
+    {
+      name: "Conjunto Zerezes",
+      quantity: 1804,
+      value: 902119.93,
+    },
+    {
+      name: "Conjunto Zerezes",
+      quantity: 1463,
+      value: 749441.51,
+    },
+    {
+      name: "Conjunto Archt",
+      quantity: 1139,
+      value: 1073.0,
+    },
+  ],
+  saleEveryMinutes: 74.45813854653633,
+  bestCampaign: {
+    name: "Campanha bonificada de engajamento de Agosto",
+    views: 3156606,
+    likes: 267005,
+    posts: 347,
+    averageViewsPerPost: 9097,
+  },
+};
+
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
         id="HelloWorld"
         component={HelloWorld}
-        durationInFrames={60 * 43}
+        durationInFrames={60 * 47}
         fps={60}
         width={1920}
         height={1080}
-        defaultProps={{
-          storeName: "Creem",
-          joinedDate: "2025-12-01",
-          totalRevenue: 1274,
-          totalCustomers: 5,
-          countries: [
-            "GB",
-            "CA",
-            "AU",
-            "DE",
-            "FR",
-            "ES",
-            "IT",
-            "NL",
-            "BE",
-            "SE",
-          ],
-          bestCustomer: 124,
-          saleEveryMinutes: 5400,
-        }}
+        defaultProps={storeData}
       />
     </>
   );

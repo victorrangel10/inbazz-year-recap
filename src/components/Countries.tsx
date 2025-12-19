@@ -4,6 +4,7 @@ import {
   Easing,
   useVideoConfig,
   Img,
+  staticFile,
 } from "remotion";
 import { Lottie } from "@remotion/lottie";
 import { useLottie } from "../hooks/useLottie";
@@ -113,97 +114,113 @@ export default function Countries({ countries }: { countries: string[] }) {
   const flagsToShow = Math.min(visibleCount, maxVisibleFlags);
 
   return (
-    <div
-      className="flex flex-col items-center w-full h-full"
-      style={{ padding: `${padding}px` }}
-    >
-      <div
-        className="text-[80px] mb-4 flex items-center gap-4 w-full"
+    <div className="flex flex-col items-center w-full h-full relative">
+      <Img
+        src={staticFile("Inbazz-Background.jpg")}
         style={{
-          height: titleHeight,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
         }}
+      />
+      <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }} />
+      <div
+        className="flex flex-col items-center w-full h-full relative"
+        style={{ padding: `${padding}px`, zIndex: 2 }}
       >
-        <span
+        <div
+          className="text-[80px] mb-4 flex items-center gap-4 w-full"
           style={{
-            display: "inline-block",
-            minWidth: `${typingText.length * 50}px`, // Approximate width to prevent shifting
-            textAlign: "left",
+            height: titleHeight,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          {displayText}
-          {showCursor && <span className="animate-pulse">|</span>}
-        </span>
-        <strong
-          style={{
-            opacity: countriesOpacity,
-            transform: `translateY(${countriesTranslateY}px)`,
-            display: frame >= countriesStartFrame ? "inline" : "hidden",
-          }}
-        >
-          {totalCountries.toLocaleString()} countries
-        </strong>
-        {globeAnimationData && (
-          <Lottie
-            animationData={globeAnimationData}
-            className="ml-6 size-[100px] inline-block align-middle"
+          <span
             style={{
-              display: frame >= globeStartFrame ? "inline-block" : "hidden",
-              verticalAlign: "middle",
-              opacity: globeOpacity,
-              transform: `translateY(${globeTranslateY}px)`,
+              display: "inline-block",
+              minWidth: `${typingText.length * 50}px`, // Approximate width to prevent shifting
+              textAlign: "left",
             }}
-            loop
-          />
-        )}
-      </div>
-      <div
-        className="grid w-full overflow-hidden"
-        style={{
-          gridTemplateColumns: `repeat(${cols}, ${flagSize}px)`,
-          gap: `${gap}px`,
-          justifyContent: "center",
-          alignContent: "start",
-          height: `${availableHeight}px`,
-        }}
-      >
-        {Array.from({ length: flagsToShow }).map((_, index) => {
-          // Calculate when this flag should appear
-          const flagStartFrame = animationDelay + index * staggerDelay;
-          const flagFrame = frame - flagStartFrame;
-
-          // Fade in and scale up animation for each flag
-          const opacity = interpolate(flagFrame, [0, 10], [0, 1], {
-            easing: Easing.out(Easing.ease),
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          });
-
-          const scale = interpolate(flagFrame, [0, 10], [0.5, 1], {
-            easing: Easing.out(Easing.back(1.2)),
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          });
-
-          return (
-            <Img
-              key={index}
-              src={`https://flagsapi.com/${countries[index]}/flat/64.png`}
-              className="flex items-center justify-center text-[180px] rounded-full"
-              width={flagSize}
-              height={flagSize}
-              style={{ opacity, transform: `scale(${scale})` }}
+          >
+            {displayText}
+            {showCursor && <span className="animate-pulse">|</span>}
+          </span>
+          <strong
+            style={{
+              opacity: countriesOpacity,
+              transform: `translateY(${countriesTranslateY}px)`,
+              display: frame >= countriesStartFrame ? "inline" : "hidden",
+            }}
+          >
+            {totalCountries.toLocaleString()} countries
+          </strong>
+          {globeAnimationData && (
+            <Lottie
+              animationData={globeAnimationData}
+              className="ml-6 size-[100px] inline-block align-middle"
+              style={{
+                display: frame >= globeStartFrame ? "inline-block" : "hidden",
+                verticalAlign: "middle",
+                opacity: globeOpacity,
+                transform: `translateY(${globeTranslateY}px)`,
+              }}
+              loop
             />
-          );
-        })}
-      </div>
-      {totalCountries > maxVisibleFlags && visibleCount >= maxVisibleFlags && (
-        <div className="text-[60px] mt-4">
-          and {totalCountries - maxVisibleFlags} more
+          )}
         </div>
-      )}
+        <div
+          className="grid w-full overflow-hidden"
+          style={{
+            gridTemplateColumns: `repeat(${cols}, ${flagSize}px)`,
+            gap: `${gap}px`,
+            justifyContent: "center",
+            alignContent: "start",
+            height: `${availableHeight}px`,
+          }}
+        >
+          {Array.from({ length: flagsToShow }).map((_, index) => {
+            // Calculate when this flag should appear
+            const flagStartFrame = animationDelay + index * staggerDelay;
+            const flagFrame = frame - flagStartFrame;
+
+            // Fade in and scale up animation for each flag
+            const opacity = interpolate(flagFrame, [0, 10], [0, 1], {
+              easing: Easing.out(Easing.ease),
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            });
+
+            const scale = interpolate(flagFrame, [0, 10], [0.5, 1], {
+              easing: Easing.out(Easing.back(1.2)),
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            });
+
+            return (
+              <Img
+                key={index}
+                src={`https://flagsapi.com/${countries[index]}/flat/64.png`}
+                className="flex items-center justify-center text-[180px] rounded-full"
+                width={flagSize}
+                height={flagSize}
+                style={{ opacity, transform: `scale(${scale})` }}
+              />
+            );
+          })}
+        </div>
+        {totalCountries > maxVisibleFlags &&
+          visibleCount >= maxVisibleFlags && (
+            <div className="text-[60px] mt-4">
+              and {totalCountries - maxVisibleFlags} more
+            </div>
+          )}
+      </div>
     </div>
   );
 }

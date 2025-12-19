@@ -63,7 +63,7 @@ export default function ImageBackground() {
         }}
       >
         <Img
-          src={staticFile("social-templates.png")}
+          src={staticFile("Inbazz-Background.jpg")}
           style={{
             width: "100%", // Image wider than viewport for panning room
             height: "100%",

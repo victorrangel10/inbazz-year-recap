@@ -1,7 +1,7 @@
 import { useCurrentFrame, interpolate, Easing } from "remotion";
 import { Colors } from "../theme";
 
-const words = ["YOUR", "YEAR", "AT", "CREEM", "2025"];
+const words = ["SEU", "2025", "NA", "INBAZZ"];
 
 export default function AnimatedText() {
   const frame = useCurrentFrame();

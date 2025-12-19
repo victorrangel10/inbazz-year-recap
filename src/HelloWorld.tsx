@@ -5,9 +5,11 @@ import AnimatedText from "./components/AnimatedText";
 import YouJoined from "./components/YouJoined";
 import Revenue from "./components/Revenue";
 import Customers from "./components/Customers";
-import Countries from "./components/Countries";
-import BigCustomer from "./components/BigCustomer";
+import CommunityPosts from "./components/CommunityPosts";
+import TopCreators from "./components/TopCreators";
+import TopProducts from "./components/TopProducts";
 import AverageHours from "./components/AverageHours";
+import BestCampaign from "./components/BestCampaign";
 import { ReactElement } from "react";
 import YearSummary from "./components/YearSummary";
 import FadeWrapper from "./components/FadeWrapper";
@@ -18,10 +20,16 @@ const { fontFamily } = loadFont(); // "Titan One"
 interface HelloWorldProps {
   joinedDate?: string;
   totalRevenue?: number;
-  totalCustomers?: number;
-  countries?: string[];
-  bestCustomer?: number;
+  totalViews?: number;
+  totalPosts?: number;
+  topByRevenue?: any;
+  topBySales?: any;
+  topByViews?: any;
+  topProducts?: any[];
   saleEveryMinutes?: number;
+  bestCampaignName?: string;
+  bestCampaignViews?: number;
+  bestCampaignRevenue?: number;
 }
 
 interface SequenceConfig {
@@ -33,10 +41,16 @@ interface SequenceConfig {
 export default function HelloWorld({
   joinedDate = "2025-01-01",
   totalRevenue = 1400000,
-  totalCustomers = 5,
-  countries = [],
-  bestCustomer = 1234,
-  saleEveryMinutes = 540,
+  totalViews = 100,
+  totalPosts = 1250,
+  topByRevenue,
+  topBySales,
+  topByViews,
+  topProducts,
+  saleEveryMinutes = 2,
+  bestCampaignName = "Summer Collection 2025",
+  bestCampaignViews = 250000,
+  bestCampaignRevenue = 45000,
 }: HelloWorldProps) {
   const sequences: SequenceConfig[] = [
     {
@@ -47,7 +61,7 @@ export default function HelloWorld({
         </>
       ),
       duration: 60 * 3,
-      gap: 22,
+      gap: -15,
     },
     // {
     //   component: <Ready />,
@@ -62,37 +76,59 @@ export default function HelloWorld({
     {
       component: <YouJoined joinedDate={joinedDate} />,
       duration: 60 * 3 + 40,
-      gap: 30,
+      gap: -15,
     },
     {
       component: <Revenue totalRevenue={totalRevenue} />,
       duration: 60 * 3 + 40,
-      gap: 30,
+      gap: -15,
     },
     {
-      component: <Customers totalCustomers={totalCustomers} />,
+      component: <Customers totalViews={totalViews} />,
       duration: 60 * 4 + 40,
-      gap: 30,
+      gap: -15,
     },
     {
-      component: <Countries countries={countries} />,
-      duration: 60 * 6.3 + 40,
-      gap: 30,
+      component: <CommunityPosts totalPosts={totalPosts} />,
+      duration: 60 * 3 + 40,
+      gap: -15,
     },
     {
-      component: <BigCustomer bestCustomer={bestCustomer} />,
+      component: (
+        <TopCreators
+          topByRevenue={topByRevenue}
+          topBySales={topBySales}
+          topByViews={topByViews}
+        />
+      ),
       duration: 60 * 5 + 40,
-      gap: 30, // Negative gap means it starts before the previous one ends
+      gap: -15,
+    },
+    {
+      component: <TopProducts products={topProducts} />,
+      duration: 60 * 5 + 40,
+      gap: -15,
     },
     {
       component: <AverageHours saleEveryMinutes={saleEveryMinutes} />,
       duration: 60 * 3 + 40,
-      gap: 30,
+      gap: -15,
+    },
+    {
+      component: (
+        <BestCampaign
+          campaignName={bestCampaignName}
+          totalViews={bestCampaignViews}
+          totalRevenue={bestCampaignRevenue}
+        />
+      ),
+      duration: 60 * 5 + 40,
+      gap: -15,
     },
     {
       component: <YearSummary />,
       duration: 60 * 8 + 40, // 8+ seconds for screenshot opportunity
-      gap: 30,
+      gap: -15,
     },
     // {
     //   component: <ThatsIt />,

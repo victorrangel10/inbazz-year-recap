@@ -1,4 +1,10 @@
-import { useCurrentFrame, interpolate, Easing } from "remotion";
+import {
+  useCurrentFrame,
+  interpolate,
+  Easing,
+  staticFile,
+  Img,
+} from "remotion";
 import { Lottie } from "@remotion/lottie";
 import { useLottie } from "../hooks/useLottie";
 
@@ -16,9 +22,14 @@ export default function AverageHours({
   const hoursStartFrame = textDelay + textDuration; // Start after "You made a sale every" appears
   const hoursDuration = 60; // Same duration as text
 
-  const timeToDisplay = `${Math.floor(saleEveryMinutes / 60)} hours ${saleEveryMinutes % 60} minutes`;
+  const hours = Math.floor(saleEveryMinutes / 60);
+  const minutes = saleEveryMinutes % 60;
+  const timeToDisplay =
+    hours > 0
+      ? `${hours} ${hours === 1 ? "hora" : "horas"}${minutes > 0 ? ` e ${minutes} ${minutes === 1 ? "minuto" : "minutos"}` : ""}`
+      : `${minutes} ${minutes === 1 ? "minuto" : "minutos"}`;
 
-  // "You made a sale every" animation: bottom-up fade in
+  // "Seus creators fizeram uma venda a cada" animation: bottom-up fade in
   const textOpacity = interpolate(
     frame,
     [textDelay, textDelay + textDuration / 2],
@@ -65,31 +76,42 @@ export default function AverageHours({
   );
 
   return (
-    <div className="flex flex-col items-center justify-center text-center w-full">
-      <div
-        className="text-[100px] mx-auto w-full flex items-center justify-center gap-4"
+    <div className="flex flex-col items-center justify-center text-center w-full h-full relative">
+      <Img
+        src={staticFile("Inbazz-Background.jpg")}
         style={{
-          opacity: textOpacity,
-          transform: `translateY(${textTranslateY}px)`,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
         }}
-      >
-        <span>You made a sale every</span>
-        {fireAnimationData && (
-          <Lottie
-            animationData={fireAnimationData}
-            className="translate-y-[-20px] h-[130px] w-[130px] inline-block object-cover"
-            loop
-          />
-        )}
-      </div>
+      />
+      <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }} />
       <div
-        className="text-[200px] w-full font-bold"
-        style={{
-          opacity: hoursOpacity,
-          transform: `translateY(${hoursTranslateY}px)`,
-        }}
+        className="flex flex-col items-center justify-center text-center w-full relative"
+        style={{ zIndex: 2 }}
       >
-        {timeToDisplay}
+        <div
+          className="text-[100px] mx-auto w-full flex items-center justify-center gap-4"
+          style={{
+            opacity: textOpacity,
+            transform: `translateY(${textTranslateY}px)`,
+          }}
+        >
+          <span>Seus creators fizeram uma venda a cada</span>
+        </div>
+        <div
+          className="text-[200px] w-full font-bold"
+          style={{
+            opacity: hoursOpacity,
+            transform: `translateY(${hoursTranslateY}px)`,
+          }}
+        >
+          {timeToDisplay}
+        </div>
       </div>
     </div>
   );
