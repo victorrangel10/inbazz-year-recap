@@ -44,7 +44,7 @@ const storeData = {
     {
       name: "Conjunto Archt",
       quantity: 1139,
-      value: 1073.0,
+      value: 745399.03,
     },
   ],
   saleEveryMinutes: 74.45813854653633,
@@ -67,7 +67,13 @@ export const RemotionRoot: React.FC = () => {
         fps={60}
         width={1920}
         height={1080}
-        defaultProps={storeData}
+        defaultProps={{
+          ...storeData,
+          bestCampaignName: storeData.bestCampaign.name,
+          bestCampaignViews: storeData.bestCampaign.views,
+          bestCampaignLikes: storeData.bestCampaign.likes,
+          bestCampaignPosts: storeData.bestCampaign.posts,
+        }}
       />
     </>
   );

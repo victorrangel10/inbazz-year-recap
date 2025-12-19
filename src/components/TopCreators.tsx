@@ -28,6 +28,7 @@ function CreatorCard({
   categoryIcon,
   useEmoji = false,
   emoji,
+  formatType,
 }: {
   creator: Creator;
   category: string;
@@ -35,9 +36,48 @@ function CreatorCard({
   categoryIcon?: any;
   useEmoji?: boolean;
   emoji?: string;
+  formatType?: "revenue" | "sales" | "views";
 }) {
   const frame = useCurrentFrame();
   const animationDuration = 40;
+
+  const formatValue = (value: string | number): string | JSX.Element => {
+    const numValue =
+      typeof value === "string"
+        ? parseFloat(value.replace(/[^0-9.]/g, ""))
+        : value;
+
+    if (formatType === "revenue") {
+      if (numValue >= 1000000) {
+        const millions = numValue / 1000000;
+        return `R$ ${millions.toFixed(2).replace(".", ",")} milhões`;
+      } else if (numValue >= 1000) {
+        const thousands = numValue / 1000;
+        return `R$ ${thousands.toFixed(2).replace(".", ",")} mil`;
+      }
+      return `R$ ${numValue.toFixed(2).replace(".", ",")}`;
+    } else if (formatType === "sales") {
+      return (
+        <span>
+          {numValue.toLocaleString("pt-BR", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          })}{" "}
+          <span style={{ fontSize: "0.4em", fontWeight: "normal" }}>
+            vendas
+          </span>
+        </span>
+      );
+    } else if (formatType === "views") {
+      if (numValue >= 1000000) {
+        return `${Math.round(numValue / 1000000)}M`;
+      } else if (numValue >= 1000) {
+        return `${Math.round(numValue / 1000)}K`;
+      }
+      return numValue.toLocaleString("pt-BR");
+    }
+    return value.toString();
+  };
 
   const opacity = interpolate(
     frame,
@@ -115,8 +155,8 @@ function CreatorCard({
       </div>
 
       {/* Value */}
-      <div className="text-[60px] font-bold text-[#FFB088] h-[75px] flex items-center">
-        {creator.value}
+      <div className="text-[50px] font-bold text-[#FFB088] h-[75px] flex items-center justify-center px-4 break-words text-center">
+        {formatValue(creator.value)}
       </div>
     </div>
   );
@@ -215,6 +255,7 @@ export default function TopCreators({
             category="Maior Receita"
             delay={cardsDelay}
             categoryIcon={moneyAnimationData}
+            formatType="revenue"
           />
           <CreatorCard
             useEmoji={true}
@@ -223,12 +264,14 @@ export default function TopCreators({
             category="Mais Vendas"
             delay={cardsDelay + 15}
             categoryIcon={coinAnimationData}
+            formatType="sales"
           />
           <CreatorCard
             creator={topByViews}
             category="Mais Views"
             delay={cardsDelay + 30}
             categoryIcon={fireAnimationData}
+            formatType="views"
           />
         </div>
       </div>

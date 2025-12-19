@@ -64,6 +64,20 @@ function ProductCard({
     },
   );
 
+  const formatRevenue = (value: string | number): string => {
+    const numValue =
+      typeof value === "string"
+        ? parseFloat(value.replace(/[^0-9.]/g, ""))
+        : value;
+
+    if (numValue >= 1000000) {
+      return `R$ ${Math.round(numValue / 1000000)}M`;
+    } else if (numValue >= 1000) {
+      return `R$ ${Math.round(numValue / 1000)}K`;
+    }
+    return `R$ ${numValue.toLocaleString("pt-BR")}`;
+  };
+
   return (
     <div
       className="flex items-center justify-between p-6 rounded-2xl border-2 border-[#FFB088]/30 w-full"
@@ -80,23 +94,23 @@ function ProductCard({
       </div>
 
       {/* Product Name */}
-      <div className="flex-1 text-[50px] font-bold text-left px-8">
+      <div className="flex-1 text-[45px] font-bold text-left px-8 truncate">
         {product.name}
       </div>
 
       {/* Stats */}
       <div className="flex gap-12 items-center">
         {/* Quantity */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center min-w-[200px]">
           <div className="text-[30px] text-gray-300 mb-2">Vendidos</div>
           <div className="text-[50px] font-bold">{product.quantity}</div>
         </div>
 
         {/* Value */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center min-w-[200px]">
           <div className="text-[30px] text-gray-300 mb-2">Receita</div>
-          <div className="text-[50px] font-bold text-[#FFB088]">
-            {product.value}
+          <div className="text-[45px] font-bold text-[#FFB088] break-words text-center">
+            {formatRevenue(product.value)}
           </div>
         </div>
       </div>

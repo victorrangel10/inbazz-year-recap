@@ -23,7 +23,7 @@ export default function AverageHours({
   const hoursDuration = 60; // Same duration as text
 
   const hours = Math.floor(saleEveryMinutes / 60);
-  const minutes = saleEveryMinutes % 60;
+  const minutes = Math.floor(saleEveryMinutes % 60);
   const timeToDisplay =
     hours > 0
       ? `${hours} ${hours === 1 ? "hora" : "horas"}${minutes > 0 ? ` e ${minutes} ${minutes === 1 ? "minuto" : "minutos"}` : ""}`
@@ -95,7 +95,7 @@ export default function AverageHours({
         style={{ zIndex: 2 }}
       >
         <div
-          className="text-[100px] mx-auto w-full flex items-center justify-center gap-4"
+          className="text-[80px] mx-auto w-full flex items-center justify-center gap-4 px-8"
           style={{
             opacity: textOpacity,
             transform: `translateY(${textTranslateY}px)`,
@@ -104,7 +104,7 @@ export default function AverageHours({
           <span>Seus creators fizeram uma venda a cada</span>
         </div>
         <div
-          className="text-[200px] w-full font-bold"
+          className="text-[150px] w-full font-bold px-8 break-words"
           style={{
             opacity: hoursOpacity,
             transform: `translateY(${hoursTranslateY}px)`,

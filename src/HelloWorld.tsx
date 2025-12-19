@@ -18,10 +18,12 @@ import { Colors } from "./theme";
 const { fontFamily } = loadFont(); // "Titan One"
 
 interface HelloWorldProps {
+  storeName?: string;
   joinedDate?: string;
   totalRevenue?: number;
   totalViews?: number;
   totalPosts?: number;
+  totalSales?: number;
   topByRevenue?: any;
   topBySales?: any;
   topByViews?: any;
@@ -29,7 +31,8 @@ interface HelloWorldProps {
   saleEveryMinutes?: number;
   bestCampaignName?: string;
   bestCampaignViews?: number;
-  bestCampaignRevenue?: number;
+  bestCampaignLikes?: number;
+  bestCampaignPosts?: number;
 }
 
 interface SequenceConfig {
@@ -39,10 +42,12 @@ interface SequenceConfig {
 }
 
 export default function HelloWorld({
+  storeName = "Awesome Store",
   joinedDate = "2025-01-01",
   totalRevenue = 1400000,
   totalViews = 100,
   totalPosts = 1250,
+  totalSales = 47,
   topByRevenue,
   topBySales,
   topByViews,
@@ -50,7 +55,8 @@ export default function HelloWorld({
   saleEveryMinutes = 2,
   bestCampaignName = "Summer Collection 2025",
   bestCampaignViews = 250000,
-  bestCampaignRevenue = 45000,
+  bestCampaignLikes = 20000,
+  bestCampaignPosts = 150,
 }: HelloWorldProps) {
   const sequences: SequenceConfig[] = [
     {
@@ -119,14 +125,25 @@ export default function HelloWorld({
         <BestCampaign
           campaignName={bestCampaignName}
           totalViews={bestCampaignViews}
-          totalRevenue={bestCampaignRevenue}
+          totalLikes={bestCampaignLikes}
+          totalPosts={bestCampaignPosts}
         />
       ),
       duration: 60 * 5 + 40,
       gap: -15,
     },
     {
-      component: <YearSummary />,
+      component: (
+        <YearSummary
+          storeName={storeName}
+          joinedDate={joinedDate}
+          totalRevenue={totalRevenue}
+          totalViews={totalViews}
+          totalSales={totalSales}
+          topCreatorRevenue={topByRevenue?.value || 0}
+          saleEveryMinutes={saleEveryMinutes}
+        />
+      ),
       duration: 60 * 8 + 40, // 8+ seconds for screenshot opportunity
       gap: -15,
     },

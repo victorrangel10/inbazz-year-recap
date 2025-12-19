@@ -11,11 +11,13 @@ import { useLottie } from "../hooks/useLottie";
 export default function BestCampaign({
   campaignName = "Summer Collection 2025",
   totalViews = 0,
-  totalRevenue = 0,
+  totalLikes = 0,
+  totalPosts = 0,
 }: {
   campaignName?: string;
   totalViews?: number;
-  totalRevenue?: number;
+  totalLikes?: number;
+  totalPosts?: number;
 }) {
   const frame = useCurrentFrame();
 
@@ -108,10 +110,21 @@ export default function BestCampaign({
     },
   );
 
-  const animatedRevenue = interpolate(
+  const animatedLikes = interpolate(
     frame,
     [statsStartFrame, statsStartFrame + statsDuration],
-    [0, totalRevenue],
+    [0, totalLikes],
+    {
+      easing: Easing.out(Easing.ease),
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
+  );
+
+  const animatedPosts = interpolate(
+    frame,
+    [statsStartFrame, statsStartFrame + statsDuration],
+    [0, totalPosts],
     {
       easing: Easing.out(Easing.ease),
       extrapolateLeft: "clamp",
@@ -122,26 +135,16 @@ export default function BestCampaign({
   // Format numbers
   const formatNumber = (value: number): string => {
     if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(1)}M`;
+      return `${Math.round(value / 1000000)}M`;
     } else if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}K`;
+      return `${Math.round(value / 1000)}K`;
     } else {
-      return Math.floor(value).toLocaleString();
-    }
-  };
-
-  const formatRevenue = (value: number): string => {
-    if (value >= 1000000) {
-      return `$${(value / 1000000).toFixed(1)}M`;
-    } else if (value >= 1000) {
-      return `$${(value / 1000).toFixed(1)}K`;
-    } else {
-      return `$${Math.floor(value).toLocaleString()}`;
+      return Math.floor(value).toLocaleString("pt-BR");
     }
   };
 
   const fireAnimationData = useLottie("/lottie/fire.json");
-  const moneyFaceAnimationData = useLottie("/lottie/money-face.json");
+  const yellowHeartAnimationData = useLottie("/lottie/yellow-heart.json");
 
   return (
     <div className="flex flex-col items-center justify-center text-center w-full h-full relative">
@@ -163,7 +166,7 @@ export default function BestCampaign({
         style={{ zIndex: 2 }}
       >
         <div
-          className="text-[100px] mx-auto w-full"
+          className="text-[80px] mx-auto w-full px-8"
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleTranslateY}px)`,
@@ -172,7 +175,7 @@ export default function BestCampaign({
           Sua melhor campanha foi
         </div>
         <div
-          className="text-[140px] w-full font-bold mb-16"
+          className="text-[90px] w-full font-bold mb-16 px-8 break-words"
           style={{
             opacity: campaignNameOpacity,
             transform: `translateY(${campaignNameTranslateY}px)`,
@@ -183,45 +186,55 @@ export default function BestCampaign({
 
         {/* Stats Grid */}
         <div
-          className="flex gap-32 items-center justify-center"
+          className="flex gap-20 items-center justify-center flex-wrap px-8"
           style={{
             opacity: statsOpacity,
             transform: `translateY(${statsTranslateY}px)`,
           }}
         >
           {/* Views */}
-          <div className="flex flex-col items-center">
-            <div className="text-[70px] text-gray-300 mb-4 flex items-center gap-4">
-              <span>Visualizações</span>
+          <div className="flex flex-col items-center min-w-[300px]">
+            <div className="text-[50px] text-gray-300 mb-4 flex items-center gap-3">
+              <span>Views</span>
               {fireAnimationData && (
                 <Lottie
                   animationData={fireAnimationData}
                   className="inline-block"
-                  style={{ width: 70, height: 70 }}
+                  style={{ width: 50, height: 50 }}
                   loop
                 />
               )}
             </div>
-            <div className="text-[120px] font-bold">
+            <div className="text-[90px] font-bold">
               {formatNumber(animatedViews)}
             </div>
           </div>
 
-          {/* Revenue */}
-          <div className="flex flex-col items-center">
-            <div className="text-[70px] text-gray-300 mb-4 flex items-center gap-4">
-              <span>Receita</span>
-              {moneyFaceAnimationData && (
+          {/* Likes */}
+          <div className="flex flex-col items-center min-w-[300px]">
+            <div className="text-[50px] text-gray-300 mb-4 flex items-center gap-3">
+              <span>Likes</span>
+              {yellowHeartAnimationData && (
                 <Lottie
-                  animationData={moneyFaceAnimationData}
+                  animationData={yellowHeartAnimationData}
                   className="inline-block"
-                  style={{ width: 70, height: 70 }}
+                  style={{ width: 50, height: 50 }}
                   loop
                 />
               )}
             </div>
-            <div className="text-[120px] font-bold">
-              {formatRevenue(animatedRevenue)}
+            <div className="text-[90px] font-bold">
+              {formatNumber(animatedLikes)}
+            </div>
+          </div>
+
+          {/* Posts */}
+          <div className="flex flex-col items-center min-w-[300px]">
+            <div className="text-[50px] text-gray-300 mb-4">
+              <span>Posts</span>
+            </div>
+            <div className="text-[90px] font-bold">
+              {formatNumber(animatedPosts)}
             </div>
           </div>
         </div>
